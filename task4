@@ -1,0 +1,5 @@
+--  4. Retrieve a list of users along with their usernames and the rank of their account creation, 
+ -- ordered by the creation date in ascending order.
+ SELECT username,created_at, Rank() over(Order by created_at asc) as account_creation_rank
+ FROM users
+    ORDER BY created_at asc;
