@@ -1,0 +1,25 @@
+ -- 9. For each comment, show the comment text, the username of the commenter, 
+ -- and the comment text of the previous comment made on the same photo.   
+ 
+    WITH CommentsWithPrevious AS (
+    SELECT
+        
+        comments.comment_text AS comment_text,
+        users.username AS username_of_commenter,
+        photos.id,
+        LAG(comments.comment_text) 
+        OVER (PARTITION BY comments.photo_id ORDER BY comments.id) AS previous_comment
+    FROM
+        comments 
+    INNER JOIN
+        users  ON comments.user_id = users.id
+    INNER JOIN
+        photos  ON comments.photo_id = photos.id
+)
+SELECT
+    
+    comment_text,
+    username_of_commenter,
+    previous_comment
+FROM
+    CommentsWithPrevious;
