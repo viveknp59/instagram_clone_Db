@@ -1,0 +1,8 @@
+--  7. List the usernames of users who have posted photos along with the count of photos they have posted.
+ -- Rank them by the number of photos in descending order.  
+
+SELECT users.username,COUNT(photos.image_url) as count_of_photos_posted
+FROM users
+JOIN photos ON users.id = photos.user_id
+GROUP BY users.id
+order by count_of_photos_posted desc;
