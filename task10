@@ -1,0 +1,25 @@
+-- 10.Show the username of each user along with the number of photos they have posted and 
+-- the number of photos posted by the user before them and after them, based on the creation date.    
+    WITH UserPhotoCounts AS (
+    SELECT
+        u.username,
+        p.user_id,
+        p.created_at,
+        ROW_NUMBER() OVER (PARTITION BY p.user_id ORDER BY p.created_at) AS photo_order,
+        COUNT(*) OVER (PARTITION BY p.user_id) AS total_photos
+    FROM
+        users u
+    LEFT JOIN
+        photos p ON u.id = p.user_id
+)
+SELECT
+    u.username,
+    upc.total_photos AS photos_posted,
+    LAG(upc.total_photos) OVER (ORDER BY upc.created_at) AS photos_before,
+    LEAD(upc.total_photos) OVER (ORDER BY upc.created_at) AS photos_after
+FROM
+    users u
+LEFT JOIN
+    UserPhotoCounts upc ON u.id = upc.user_id
+ORDER BY
+    upc.created_at;
