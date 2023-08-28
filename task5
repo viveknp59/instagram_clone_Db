@@ -1,0 +1,16 @@
+-- 5. List the comments made on photos with their comment texts, 
+-- photo URLs, and usernames of users who posted the comments. 
+-- Include the comment count for each photo    
+
+ SELECT 
+    photos.id,
+    photos.image_url,
+    users.username AS user_username,
+    comments.comment_text,
+    COUNT(*) OVER (PARTITION BY photos.id) AS comment_count
+FROM 
+    photos 
+INNER JOIN 
+    comments  ON photos.id = comments.id
+INNER JOIN 
+    users  ON comments.id = users.id;
