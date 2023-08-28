@@ -23,3 +23,39 @@ LEFT JOIN
     UserPhotoCounts upc ON u.id = upc.user_id
 ORDER BY
     upc.created_at;
+
+
+
+In this query:
+
+We first create a common table expression (CTE) called UserPhotoCounts to calculate the number of photos each user has posted and 
+to assign an order to the photos based on their creation date for each user.
+
+Within the CTE, we select the username, user_id, and created_at, and use the ROW_NUMBER() window function to determine the order of the photos based on their creation date.
+We also use the COUNT(*) window function to calculate the total number of photos each user has posted.
+
+In the main query, we select the username from the user's table and retrieve the total_photos (number of photos posted by the user), 
+the photos_before (number of photos posted by the user before), 
+and the photos_after (number of photos posted by the user after) using the LAG() and LEAD() window functions, respectively.
+These functions look at the order determined in the CTE.
+
+We join the users table with the UserPhotoCounts CTE based on the user_id.
+
+Finally, we order the results by the created_at date to show the information in chronological order based on the creation date of the photos.
+
+This query will give you the username of each user, the number of photos they have posted, 
+and the number of photos posted by the user before and after them based on the creation date of the photos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
